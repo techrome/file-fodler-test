@@ -1,8 +1,8 @@
-import React from "react";
-import { TextField } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+import React from 'react';
+import { TextField } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 
-import Label from "./_defaultLabel";
+import Label from './_defaultLabel';
 
 const DefaultSelect = ({
   value, // empty values - "null" for single and "[]" for multiple
@@ -24,7 +24,6 @@ const DefaultSelect = ({
         value={value}
         getOptionLabel={(option) => option.title}
         onChange={(e, val) => onChange(val)}
-        filterSelectedOptions
         disabled={disabled}
         renderInput={(params) => (
           <TextField

@@ -26,19 +26,23 @@ export const getById = (id, data) => {
 };
 
 // mutates!
-export const deleteById = (id, data) => {
-  let deleted = false;
+export const deleteOrModifyById = (id, data, newInfo) => {
+  let success = false;
 
   const _recursive = (children) => {
     for (let i = 0; i < children.length; i++) {
       const el = children[i];
 
-      if (deleted) {
+      if (success) {
         break;
       }
       if (el.id === id) {
-        children.splice(i, 1);
-        deleted = true;
+        if (newInfo) {
+          children.splice(i, 1, newInfo);
+        } else {
+          children.splice(i, 1);
+        }
+        success = true;
         break;
       }
       if (el.children?.length > 0) {
@@ -48,7 +52,7 @@ export const deleteById = (id, data) => {
   };
   _recursive(data);
 
-  return deleted;
+  return success;
 };
 
 // gives reference!

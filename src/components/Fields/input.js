@@ -1,7 +1,7 @@
-import React from "react";
-import { TextField } from "@material-ui/core";
+import React from 'react';
+import { TextField } from '@material-ui/core';
 
-import Label from "./_defaultLabel";
+import Label from './_defaultLabel';
 
 const DefaultInput = ({
   value,

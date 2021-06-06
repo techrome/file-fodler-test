@@ -81,27 +81,36 @@ const ElementModal = ({
 
     if (isEdit) {
       const isNewParent = data.parentId !== payload.parentId;
-      editElement(
-        {
-          ...data,
-          name: payload.name,
-          type: payload.type,
-          parentId: payload.parentId,
-          ...(isFile ? { meta: { format: payload.format } } : {}),
-        },
-        isNewParent,
-      );
+
+      let dataToSave = {
+        ...data,
+        name: payload.name,
+        type: payload.type,
+        parentId: payload.parentId,
+      };
+      if (isFile) {
+        dataToSave.meta = { format: payload.format };
+        delete dataToSave.children;
+      } else {
+        dataToSave.children = data.children || [];
+        delete dataToSave.meta;
+      }
+
+      editElement(dataToSave, isNewParent);
     } else {
-      addElement(
-        {
-          id: uniqueId('elem-'),
-          name: payload.name,
-          type: payload.type,
-          parentId: payload.parentId,
-          ...(isFile ? { meta: { format: payload.format } } : { children: [] }),
-        },
-        payload,
-      );
+      let dataToSave = {
+        id: uniqueId('elem-'),
+        name: payload.name,
+        type: payload.type,
+        parentId: payload.parentId,
+      };
+      if (isFile) {
+        dataToSave.meta = { format: payload.format };
+      } else {
+        dataToSave.children = [];
+      }
+
+      addElement(dataToSave, payload);
     }
     setAllFolders();
     onClose();

@@ -2,7 +2,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import {
   getById,
-  deleteById,
+  deleteOrModifyById,
   getAllFolders,
 } from 'src/helpers/recursiveMethods';
 import * as c from 'src/constants';
@@ -104,10 +104,9 @@ export default (state = initialState, action) => {
         let newParentFolder = getById(payload.info.parentId, updatedRoot);
 
         // to avoid moving parent folder inside its child folder
-        const newParentAlreadyInside = !!getById(
-          payload.info.parentId,
-          payload.info.children,
-        );
+        const newParentAlreadyInside =
+          payload.info.type === c.folder &&
+          !!getById(payload.info.parentId, payload.info.children);
         if (newParentAlreadyInside) {
           return state;
         }
@@ -118,11 +117,11 @@ export default (state = initialState, action) => {
           );
         }
         const clonedInfo = cloneDeep(payload.info);
-        deleteById(clonedInfo.id, updatedRoot);
+        deleteOrModifyById(clonedInfo.id, updatedRoot);
         newParentFolder.children.push(clonedInfo);
       } else {
-        let updatedElement = getById(payload.info.id, updatedRoot);
-        updatedElement = payload.info;
+        const clonedInfo = cloneDeep(payload.info);
+        deleteOrModifyById(clonedInfo.id, updatedRoot, clonedInfo);
       }
       return {
         ...state,
@@ -132,7 +131,7 @@ export default (state = initialState, action) => {
     case elementsTypes.DELETE_ELEMENT: {
       let updatedRoot = cloneDeep(state.root);
 
-      deleteById(payload.id, updatedRoot);
+      deleteOrModifyById(payload.id, updatedRoot);
 
       return {
         ...state,

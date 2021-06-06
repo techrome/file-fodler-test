@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
   FormControlLabel,
   FormHelperText,
   RadioGroup,
-  Radio
-} from "@material-ui/core";
+  Radio,
+} from '@material-ui/core';
 
-import Label from "./_defaultLabel";
+import Label from './_defaultLabel';
 
 const DefaultRadio = ({
   value,
