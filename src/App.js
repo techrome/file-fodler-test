@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
   },
   fileList: {
     marginTop: theme.spacing(4),
+    border: `1px solid ${theme.palette.divider}`,
+    padding: theme.spacing(3),
+    borderRadius: theme.spacing(1),
   },
   labelRoot: {
     display: 'flex',
@@ -79,7 +82,15 @@ const RecursiveTreeItem = ({ data, ...props }) => {
   );
 };
 
-const App = ({ root, setModalInfo, resetModal, deleteElement, ...props }) => {
+const App = ({
+  root,
+
+  setModalInfo,
+  resetModal,
+  deleteElement,
+  setAllFolders,
+  ...props
+}) => {
   const [selectedElementId, setSelectedElementId] = useState(null);
   const cls = useStyles();
 
@@ -105,6 +116,7 @@ const App = ({ root, setModalInfo, resetModal, deleteElement, ...props }) => {
 
     if (foundEl) {
       deleteElement(foundEl.id);
+      setAllFolders();
     }
   };
 
@@ -168,6 +180,7 @@ const mapDispatch = {
   setModalInfo: modalActions.setInfo,
   resetModal: modalActions.reset,
   deleteElement: elementsActions.deleteElement,
+  setAllFolders: elementsActions.setAllFolders,
 };
 
 export default connect(mapState, mapDispatch)(App);
